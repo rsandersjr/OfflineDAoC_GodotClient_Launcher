@@ -5,6 +5,11 @@ It keeps a list of server accounts and starts the game client for the one you pi
 
 Used Claude to code in C# with [Avalonia](https://avaloniaui.net), so the same code runs on Windows, Linux and macOS.
 
+<img width="646" height="481" alt="image" src="https://github.com/user-attachments/assets/2f110bcd-f00e-470e-b480-c792c7e0df13" />
+<img width="583" height="322" alt="image" src="https://github.com/user-attachments/assets/b44f7f24-3d72-44aa-a7b2-59003444aa32" />
+<img width="503" height="341" alt="image" src="https://github.com/user-attachments/assets/9089de8c-5c2d-4681-9f63-5df0cd7e5176" />
+
+
 ## Running it
 
 Windows: run `dist\win-x64\OfflineDAoCLauncher.exe`. It is a single file with .NET built in, so it can be
