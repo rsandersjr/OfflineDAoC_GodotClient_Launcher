@@ -3,7 +3,7 @@
 A small retro-style launcher for [OfflineDAoC-True165](https://github.com/shadowofze/OfflineDAoC-True165).
 It keeps a list of server accounts and starts the game client for the one you pick.
 
-Written in C# with [Avalonia](https://avaloniaui.net), so the same code runs on Windows, Linux and macOS.
+Used Claude to code in C# with [Avalonia](https://avaloniaui.net), so the same code runs on Windows, Linux and macOS.
 
 ## Running it
 
