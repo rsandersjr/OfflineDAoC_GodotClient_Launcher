@@ -1,0 +1,51 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="OfflineDAoCLauncher.App"
+             RequestedThemeVariant="Light">
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://OfflineDAoCLauncher/Themes/RetroControls.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+
+      <FontFamily x:Key="UiFont">Tahoma, Microsoft Sans Serif, DejaVu Sans, Arial, sans-serif</FontFamily>
+      <FontFamily x:Key="SerifFont">Palatino Linotype, Book Antiqua, Georgia, DejaVu Serif, Times New Roman, serif</FontFamily>
+      <FontFamily x:Key="MonoFont">Courier New, Liberation Mono, DejaVu Sans Mono, Menlo, monospace</FontFamily>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <SimpleTheme />
+
+    <Style Selector="Window">
+      <Setter Property="Background" Value="{StaticResource RetroFace}" />
+      <Setter Property="Foreground" Value="Black" />
+      <Setter Property="FontFamily" Value="{StaticResource UiFont}" />
+      <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <!-- Text fields sit inside a SunkenFrame, which draws the 3D edge. -->
+    <Style Selector="TextBox">
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Background" Value="White" />
+      <Setter Property="Foreground" Value="Black" />
+      <Setter Property="Padding" Value="3,2" />
+      <Setter Property="MinHeight" Value="19" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="SelectionBrush" Value="{StaticResource RetroSelection}" />
+      <Setter Property="SelectionForegroundBrush" Value="White" />
+    </Style>
+
+    <Style Selector="TextBlock.columnHeader">
+      <Setter Property="Foreground" Value="Black" />
+      <Setter Property="Margin" Value="4,1,2,1" />
+      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style Selector="TextBlock.cell">
+      <Setter Property="Margin" Value="0,0,6,0" />
+      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+  </Application.Styles>
+</Application>

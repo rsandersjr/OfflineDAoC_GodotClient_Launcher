@@ -1,0 +1,112 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="using:OfflineDAoCLauncher.Models"
+        xmlns:c="using:OfflineDAoCLauncher.Controls"
+        x:Class="OfflineDAoCLauncher.MainWindow"
+        Title="Offline DAoC 1.65 Servers"
+        Width="640" Height="444"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen"
+        Icon="/Assets/icon.ico">
+
+  <Window.Background>
+    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,100%">
+      <GradientStop Offset="0" Color="#1B1B20" />
+      <GradientStop Offset="0.45" Color="#060607" />
+      <GradientStop Offset="1" Color="#141417" />
+    </LinearGradientBrush>
+  </Window.Background>
+
+  <Window.Styles>
+    <Style Selector="TextBlock.heading">
+      <Setter Property="FontFamily" Value="{StaticResource SerifFont}" />
+      <Setter Property="FontStyle" Value="Italic" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="Foreground" Value="#DADADA" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+  </Window.Styles>
+
+  <Grid Margin="12,4,12,9" RowDefinitions="82,24,*,32" ColumnDefinitions="*,14,*">
+
+    <!-- Title mark (replaced by logo.png when one sits next to the launcher) -->
+    <Panel Grid.Row="0" Grid.ColumnSpan="3" Width="190" Height="80"
+           HorizontalAlignment="Left" VerticalAlignment="Top">
+      <c:LogoControl Name="Logo" />
+      <Image Name="LogoImage" IsVisible="False" Stretch="Uniform" />
+    </Panel>
+
+    <!-- Welcome banner -->
+    <ContentControl Grid.Row="0" Grid.ColumnSpan="3" Height="38" Margin="184,0,0,6" Padding="2"
+                    VerticalAlignment="Bottom" Theme="{StaticResource RaisedFrame}">
+      <ContentControl Theme="{StaticResource SunkenFrame}" Background="Black">
+        <TextBlock Name="BannerText"
+                   Text="Welcome to Offline DAoC 1.65!"
+                   Foreground="#E8161E"
+                   FontFamily="{StaticResource MonoFont}"
+                   FontWeight="Bold" FontSize="15" LetterSpacing="1"
+                   TextTrimming="CharacterEllipsis"
+                   Margin="8,0"
+                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+      </ContentControl>
+    </ContentControl>
+
+    <TextBlock Grid.Row="1" Grid.Column="0" Classes="heading" Margin="26,0,0,0"
+               Text="Choose a Server and Hit Play" />
+    <TextBlock Grid.Row="1" Grid.Column="2" Classes="heading" HorizontalAlignment="Center"
+               Text="News / Patch Messages" />
+
+    <!-- Server list -->
+    <ContentControl Grid.Row="2" Grid.Column="0" Theme="{StaticResource SunkenFrame}" Background="Black">
+      <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="107,90,*">
+          <ContentControl Grid.Column="0" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Server Name" />
+          </ContentControl>
+          <ContentControl Grid.Column="1" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Account Name" />
+          </ContentControl>
+          <ContentControl Grid.Column="2" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="World Mode" />
+          </ContentControl>
+        </Grid>
+
+        <ListBox Name="ServerList" Grid.Row="1"
+                 Background="Black" Foreground="White" BorderThickness="0" Padding="0,2,0,0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 DoubleTapped="OnServerListDoubleTapped">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="m:ServerAccount">
+              <Grid ColumnDefinitions="104,90,*">
+                <TextBlock Grid.Column="0" Classes="cell" Text="{Binding ServerName}" />
+                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding AccountName}" />
+                <TextBlock Grid.Column="2" Classes="cell" Margin="0" Text="{Binding WorldMode}" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Name="EmptyHint" Grid.Row="1" IsVisible="False" IsHitTestVisible="False"
+                   Foreground="#9A9A9A" TextWrapping="Wrap" TextAlignment="Center"
+                   Margin="24,40,24,0" VerticalAlignment="Top"
+                   Text="No server accounts yet.&#x0a;&#x0a;Click &quot;Server Accounts&quot; below to add one." />
+      </Grid>
+    </ContentControl>
+
+    <!-- News -->
+    <ContentControl Grid.Row="2" Grid.Column="2" Theme="{StaticResource SunkenFrame}" Background="Black">
+      <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled">
+        <SelectableTextBlock Name="NewsText" Foreground="White" TextWrapping="Wrap" Margin="5,3,6,6"
+                             SelectionBrush="{StaticResource RetroSelection}" />
+      </ScrollViewer>
+    </ContentControl>
+
+    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="32"
+                HorizontalAlignment="Center" VerticalAlignment="Bottom">
+      <Button Name="PlayButton" Width="106" Content="Play" IsDefault="True" Click="OnPlayClick" />
+      <Button Name="AccountsButton" Width="106" Content="Server Accounts" Click="OnAccountsClick" />
+      <Button Name="HomepageButton" Width="106" Content="Homepage" Click="OnHomepageClick" />
+      <Button Name="ExitButton" Width="106" Content="Exit" Click="OnExitClick" />
+    </StackPanel>
+  </Grid>
+</Window>

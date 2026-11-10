@@ -1,0 +1,264 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Classic Windows 9x palette -->
+  <SolidColorBrush x:Key="RetroFace" Color="#C0C0C0" />
+  <SolidColorBrush x:Key="RetroHighlight" Color="#FFFFFF" />
+  <SolidColorBrush x:Key="RetroLight" Color="#DFDFDF" />
+  <SolidColorBrush x:Key="RetroShadow" Color="#808080" />
+  <SolidColorBrush x:Key="RetroDarkShadow" Color="#000000" />
+  <SolidColorBrush x:Key="RetroSelection" Color="#000080" />
+
+  <!-- Raised 3D frame around any content (column headers, the banner surround) -->
+  <ControlTheme x:Key="RaisedFrame" TargetType="ContentControl">
+    <Setter Property="Background" Value="{StaticResource RetroFace}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource RetroDarkShadow}" BorderThickness="0,0,1,1">
+          <Border BorderBrush="{StaticResource RetroHighlight}" BorderThickness="1,1,0,0">
+            <Border BorderBrush="{StaticResource RetroShadow}" BorderThickness="0,0,1,1">
+              <ContentPresenter Name="PART_ContentPresenter"
+                                Padding="{TemplateBinding Padding}"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+            </Border>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <!-- Sunken 3D frame (text fields, lists, the black panels) -->
+  <ControlTheme x:Key="SunkenFrame" TargetType="ContentControl">
+    <Setter Property="Background" Value="White" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="VerticalContentAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border BorderBrush="{StaticResource RetroHighlight}" BorderThickness="0,0,1,1">
+          <Border BorderBrush="{StaticResource RetroShadow}" BorderThickness="1,1,0,0">
+            <Border BorderBrush="{StaticResource RetroLight}" BorderThickness="0,0,1,1">
+              <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource RetroDarkShadow}" BorderThickness="1,1,0,0">
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Padding="{TemplateBinding Padding}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+              </Border>
+            </Border>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <!-- Push button -->
+  <ControlTheme x:Key="{x:Type Button}" TargetType="Button">
+    <Setter Property="Background" Value="{StaticResource RetroFace}" />
+    <Setter Property="Foreground" Value="Black" />
+    <Setter Property="Padding" Value="6,2" />
+    <Setter Property="MinHeight" Value="23" />
+    <Setter Property="MinWidth" Value="75" />
+    <Setter Property="HorizontalContentAlignment" Value="Center" />
+    <Setter Property="VerticalContentAlignment" Value="Center" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="edge1" Background="{TemplateBinding Background}" BorderBrush="{StaticResource RetroDarkShadow}" BorderThickness="0,0,1,1">
+          <Border Name="edge2" BorderBrush="{StaticResource RetroHighlight}" BorderThickness="1,1,0,0">
+            <Border Name="edge3" BorderBrush="{StaticResource RetroShadow}" BorderThickness="0,0,1,1">
+              <Border Name="edge4" BorderBrush="{StaticResource RetroLight}" BorderThickness="1,1,0,0">
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Padding="{TemplateBinding Padding}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Foreground="{TemplateBinding Foreground}"
+                                  HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  RecognizesAccessKey="True" />
+              </Border>
+            </Border>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:pressed /template/ Border#edge1">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroHighlight}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge2">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroDarkShadow}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge3">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroLight}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge4">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroShadow}" />
+    </Style>
+    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="RenderTransform" Value="translate(1px, 1px)" />
+    </Style>
+    <Style Selector="^:disabled">
+      <Setter Property="Foreground" Value="{StaticResource RetroShadow}" />
+    </Style>
+  </ControlTheme>
+
+  <!-- List rows: solid navy selection, no hover tint -->
+  <ControlTheme x:Key="{x:Type ListBoxItem}" TargetType="ListBoxItem">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Padding" Value="3,1" />
+    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <ContentPresenter Name="PART_ContentPresenter"
+                          Background="{TemplateBinding Background}"
+                          Padding="{TemplateBinding Padding}"
+                          Content="{TemplateBinding Content}"
+                          ContentTemplate="{TemplateBinding ContentTemplate}"
+                          HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                          VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:selected">
+      <Setter Property="Background" Value="{StaticResource RetroSelection}" />
+      <Setter Property="Foreground" Value="White" />
+    </Style>
+  </ControlTheme>
+
+  <!-- Scroll bar pieces -->
+  <ControlTheme x:Key="RetroScrollArrow" TargetType="RepeatButton">
+    <Setter Property="Background" Value="{StaticResource RetroFace}" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="edge1" Background="{TemplateBinding Background}" BorderBrush="{StaticResource RetroDarkShadow}" BorderThickness="0,0,1,1">
+          <Border Name="edge2" BorderBrush="{StaticResource RetroLight}" BorderThickness="1,1,0,0">
+            <Border Name="edge3" BorderBrush="{StaticResource RetroShadow}" BorderThickness="0,0,1,1">
+              <Border Name="edge4" BorderBrush="{StaticResource RetroHighlight}" BorderThickness="1,1,0,0">
+                <ContentPresenter Name="PART_ContentPresenter"
+                                  Content="{TemplateBinding Content}"
+                                  HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+              </Border>
+            </Border>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+
+    <Style Selector="^:pressed /template/ Border#edge1">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroShadow}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge2">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroShadow}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge3">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroFace}" />
+    </Style>
+    <Style Selector="^:pressed /template/ Border#edge4">
+      <Setter Property="BorderBrush" Value="{StaticResource RetroFace}" />
+    </Style>
+    <Style Selector="^:pressed /template/ ContentPresenter#PART_ContentPresenter">
+      <Setter Property="RenderTransform" Value="translate(1px, 1px)" />
+    </Style>
+  </ControlTheme>
+
+  <ControlTheme x:Key="RetroScrollPage" TargetType="RepeatButton">
+    <Setter Property="Background" Value="Transparent" />
+    <Setter Property="Focusable" Value="False" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" />
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="RetroScrollThumb" TargetType="Thumb">
+    <Setter Property="Background" Value="{StaticResource RetroFace}" />
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Background="{TemplateBinding Background}" BorderBrush="{StaticResource RetroDarkShadow}" BorderThickness="0,0,1,1">
+          <Border BorderBrush="{StaticResource RetroLight}" BorderThickness="1,1,0,0">
+            <Border BorderBrush="{StaticResource RetroShadow}" BorderThickness="0,0,1,1">
+              <Border BorderBrush="{StaticResource RetroHighlight}" BorderThickness="1,1,0,0" />
+            </Border>
+          </Border>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </ControlTheme>
+
+  <ControlTheme x:Key="{x:Type ScrollBar}" TargetType="ScrollBar">
+    <Setter Property="Cursor" Value="Arrow" />
+    <Setter Property="Background" Value="#DCDCDC" />
+
+    <Style Selector="^:vertical">
+      <Setter Property="Width" Value="16" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+            <Grid RowDefinitions="Auto,*,Auto">
+              <RepeatButton Name="PART_LineUpButton" Grid.Row="0" Height="16" Theme="{StaticResource RetroScrollArrow}">
+                <Path Data="M 0 4 L 7 4 L 3.5 0 Z" Fill="Black" />
+              </RepeatButton>
+              <Track Grid.Row="1"
+                     IsDirectionReversed="True"
+                     Minimum="{TemplateBinding Minimum}"
+                     Maximum="{TemplateBinding Maximum}"
+                     Orientation="{TemplateBinding Orientation}"
+                     ViewportSize="{TemplateBinding ViewportSize}"
+                     Value="{TemplateBinding Value, Mode=TwoWay}">
+                <Track.DecreaseButton>
+                  <RepeatButton Name="PART_PageUpButton" Theme="{StaticResource RetroScrollPage}" />
+                </Track.DecreaseButton>
+                <Track.IncreaseButton>
+                  <RepeatButton Name="PART_PageDownButton" Theme="{StaticResource RetroScrollPage}" />
+                </Track.IncreaseButton>
+                <Thumb Name="thumb" MinHeight="10" Theme="{StaticResource RetroScrollThumb}" />
+              </Track>
+              <RepeatButton Name="PART_LineDownButton" Grid.Row="2" Height="16" Theme="{StaticResource RetroScrollArrow}">
+                <Path Data="M 0 0 L 3.5 4 L 7 0 Z" Fill="Black" />
+              </RepeatButton>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="^:horizontal">
+      <Setter Property="Height" Value="16" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}" UseLayoutRounding="False">
+            <Grid ColumnDefinitions="Auto,*,Auto">
+              <RepeatButton Name="PART_LineUpButton" Grid.Column="0" Width="16" Theme="{StaticResource RetroScrollArrow}">
+                <Path Data="M 4 0 L 4 7 L 0 3.5 Z" Fill="Black" />
+              </RepeatButton>
+              <Track Grid.Column="1"
+                     Minimum="{TemplateBinding Minimum}"
+                     Maximum="{TemplateBinding Maximum}"
+                     Orientation="{TemplateBinding Orientation}"
+                     ViewportSize="{TemplateBinding ViewportSize}"
+                     Value="{TemplateBinding Value, Mode=TwoWay}">
+                <Track.DecreaseButton>
+                  <RepeatButton Name="PART_PageUpButton" Theme="{StaticResource RetroScrollPage}" />
+                </Track.DecreaseButton>
+                <Track.IncreaseButton>
+                  <RepeatButton Name="PART_PageDownButton" Theme="{StaticResource RetroScrollPage}" />
+                </Track.IncreaseButton>
+                <Thumb Name="thumb" MinWidth="10" Theme="{StaticResource RetroScrollThumb}" />
+              </Track>
+              <RepeatButton Name="PART_LineDownButton" Grid.Column="2" Width="16" Theme="{StaticResource RetroScrollArrow}">
+                <Path Data="M 0 0 L 4 3.5 L 0 7 Z" Fill="Black" />
+              </RepeatButton>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+  </ControlTheme>
+
+</ResourceDictionary>

@@ -1,0 +1,60 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="using:OfflineDAoCLauncher.Models"
+        x:Class="OfflineDAoCLauncher.AccountsWindow"
+        Title="Server Accounts"
+        Width="580" Height="290"
+        CanResize="False"
+        CanMinimize="False"
+        ShowInTaskbar="False"
+        WindowStartupLocation="CenterOwner"
+        Icon="/Assets/icon.ico">
+
+  <Grid Margin="10" ColumnDefinitions="*,Auto">
+
+    <ContentControl Grid.Column="0" Theme="{StaticResource SunkenFrame}">
+      <Grid RowDefinitions="Auto,*">
+        <Grid Grid.Row="0" ColumnDefinitions="123,100,110,*">
+          <ContentControl Grid.Column="0" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Server Name" />
+          </ContentControl>
+          <ContentControl Grid.Column="1" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Server IP" />
+          </ContentControl>
+          <ContentControl Grid.Column="2" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Account Name" />
+          </ContentControl>
+          <ContentControl Grid.Column="3" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="World Mode" />
+          </ContentControl>
+        </Grid>
+
+        <ListBox Name="AccountList" Grid.Row="1"
+                 Background="White" Foreground="Black" BorderThickness="0" Padding="0,1,0,0"
+                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                 SelectionChanged="OnSelectionChanged"
+                 DoubleTapped="OnListDoubleTapped">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="m:ServerAccount">
+              <Grid ColumnDefinitions="120,100,110,*">
+                <TextBlock Grid.Column="0" Classes="cell" Text="{Binding ServerName}" />
+                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding ServerIp}" />
+                <TextBlock Grid.Column="2" Classes="cell" Text="{Binding AccountName}" />
+                <TextBlock Grid.Column="3" Classes="cell" Margin="0" Text="{Binding WorldMode}" />
+              </Grid>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </Grid>
+    </ContentControl>
+
+    <DockPanel Grid.Column="1" Margin="10,0,0,0" LastChildFill="False">
+      <StackPanel DockPanel.Dock="Top" Spacing="6">
+        <Button Name="AddButton" Content="Add..." Click="OnAddClick" />
+        <Button Name="EditButton" Content="Edit..." Click="OnEditClick" />
+        <Button Name="DeleteButton" Content="Delete" Click="OnDeleteClick" />
+      </StackPanel>
+      <Button Name="CloseButton" DockPanel.Dock="Bottom" Content="Close" IsCancel="True" Click="OnCloseClick" />
+    </DockPanel>
+  </Grid>
+</Window>
