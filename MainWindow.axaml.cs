@@ -59,7 +59,11 @@ public partial class MainWindow : Window
 
         _store = AccountStore.Load();
         ServerList.ItemsSource = _store.Accounts;
-        _store.Accounts.CollectionChanged += (_, _) => UpdateEmptyHint();
+        _store.Accounts.CollectionChanged += (_, _) =>
+        {
+            UpdateEmptyHint();
+            _ = CheckServers(); // an added or edited entry may point at a different server
+        };
         Select(_store.LastSelectedId);
         UpdateEmptyHint();
 
@@ -67,13 +71,70 @@ public partial class MainWindow : Window
         LoadCustomLogo();
 
         _launchCooldown.Tick += (_, _) => EndLaunchCooldown();
+        _statusTimer.Tick += (_, _) => _ = CheckServers();
         Opened += OnOpened;
-        Closing += (_, _) => RememberSelection();
+        Closing += (_, _) =>
+        {
+            _statusTimer.Stop();
+            _statusCancel.Cancel();
+            RememberSelection();
+        };
+    }
+
+    private readonly DispatcherTimer _statusTimer = new() { Interval = TimeSpan.FromSeconds(5) };
+    private readonly CancellationTokenSource _statusCancel = new();
+    private bool _checking;
+    private bool _checkAgain;
+
+    /// <summary>
+    /// Updates the status dot of every entry by connecting to the TCP login port named in its install's
+    /// server config. Entries for the same server are checked once.
+    /// </summary>
+    private async Task CheckServers()
+    {
+        if (_checking)
+        {
+            _checkAgain = true;
+            return;
+        }
+
+        _checking = true;
+        try
+        {
+            do
+            {
+                _checkAgain = false;
+                var accounts = _store.Accounts.ToList();
+                var endpoints = await Task.Run(() => accounts.Select(ServerStatus.Resolve).ToList());
+                var results = await Task.WhenAll(endpoints
+                    .Select(ep => (ep.Host, ep.Port)).Distinct()
+                    .Select(async key => (key, online: await ServerStatus.IsOnline(
+                        new ServerEndpoint(key.Host, key.Port, null), _statusCancel.Token))));
+                if (_statusCancel.IsCancellationRequested)
+                    return;
+
+                var online = results.ToDictionary(r => r.key, r => r.online);
+                for (var i = 0; i < accounts.Count; i++)
+                {
+                    var ep = endpoints[i];
+                    var up = online[(ep.Host, ep.Port)];
+                    accounts[i].IsOnline = up;
+                    accounts[i].StatusText = $"{(up ? "Online" : "Offline")} ({ep.Host}:{ep.Port})" +
+                        (ep.ConfigFile is null ? "\nNo server config found; using the Server IP and port 10300." : $"\nFrom {ep.ConfigFile}");
+                }
+            } while (_checkAgain);
+        }
+        finally
+        {
+            _checking = false;
+        }
     }
 
     private async void OnOpened(object? sender, EventArgs e)
     {
         ServerList.Focus();
+        _ = CheckServers();
+        _statusTimer.Start();
         if (_store.LoadWarning is { } warning)
             await Dialogs.ShowMessage(this, "Server Accounts", warning);
     }
@@ -131,6 +192,50 @@ public partial class MainWindow : Window
         var accounts = new AccountsWindow(_store, selectedId);
         await accounts.ShowDialog(this);
         Select(accounts.SelectedId ?? selectedId);
+        ServerList.Focus();
+    }
+
+    /// <summary>
+    /// Opens the settings of the selected entry's install: true165-rules.json in runtime\true165,
+    /// two levels up from its Godot client folder.
+    /// </summary>
+    private async void OnOptionsClick(object? sender, RoutedEventArgs e)
+    {
+        if (ServerList.SelectedItem is not ServerAccount account)
+        {
+            await Dialogs.ShowMessage(this, "Server Options",
+                _store.Accounts.Count == 0
+                    ? "There are no server accounts yet.\n\nClick \"Server Accounts\" and add one with the game's Godot client folder; the server options are found from it."
+                    : "Choose a server in the list first. Its Godot client folder tells the launcher where the server options are.");
+            return;
+        }
+
+        var clientFolder = GameLauncher.FindClientFolder(account.ClientFolder) ?? account.ClientFolder;
+        var path = ServerRules.PathFor(clientFolder);
+        if (path is null || !File.Exists(path))
+        {
+            await Dialogs.ShowMessage(this, "Server Options",
+                $"Could not find {ServerRules.FileName} for \"{account.ServerName}\".\n\n" +
+                (path is null
+                    ? "Set its Godot client folder in Server Accounts first."
+                    : $"Looked for:\n{path}\n\nIt should be in runtime\\true165, two folders up from the Godot client folder."));
+            return;
+        }
+
+        ServerRules rules;
+        try
+        {
+            rules = ServerRules.Load(path);
+        }
+        catch (RulesFileException ex)
+        {
+            await Dialogs.ShowMessage(this, "Server Options", ex.Message);
+            return;
+        }
+
+        if (await new ServerOptionsWindow(rules).ShowDialog<bool>(this))
+            await Dialogs.ShowMessage(this, "Server Options",
+                "Server options saved.\n\nRestart the server for the changes to take effect.");
         ServerList.Focus();
     }
 

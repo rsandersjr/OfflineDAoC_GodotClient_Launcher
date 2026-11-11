@@ -4,7 +4,7 @@
         xmlns:c="using:OfflineDAoCLauncher.Controls"
         x:Class="OfflineDAoCLauncher.MainWindow"
         Title="Offline DAoC 1.65 Servers"
-        Width="640" Height="444"
+        Width="720" Height="444"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         Icon="/Assets/icon.ico">
@@ -24,6 +24,23 @@
       <Setter Property="FontSize" Value="14" />
       <Setter Property="Foreground" Value="#DADADA" />
       <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <!-- Server status dot: grey until checked, then green (online) or red (offline). -->
+    <Style Selector="Ellipse.status">
+      <Setter Property="Width" Value="10" />
+      <Setter Property="Height" Value="10" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="Fill" Value="#606060" />
+      <Setter Property="Stroke" Value="#202020" />
+      <Setter Property="StrokeThickness" Value="1" />
+    </Style>
+    <Style Selector="Ellipse.status.online">
+      <Setter Property="Fill" Value="#20D020" />
+    </Style>
+    <Style Selector="Ellipse.status.offline">
+      <Setter Property="Fill" Value="#E02020" />
     </Style>
   </Window.Styles>
 
@@ -59,14 +76,18 @@
     <!-- Server list -->
     <ContentControl Grid.Row="2" Grid.Column="0" Theme="{StaticResource SunkenFrame}" Background="Black">
       <Grid RowDefinitions="Auto,*">
-        <Grid Grid.Row="0" ColumnDefinitions="107,90,*">
-          <ContentControl Grid.Column="0" Theme="{StaticResource RaisedFrame}">
-            <TextBlock Classes="columnHeader" Text="Server Name" />
+        <Grid Grid.Row="0" ColumnDefinitions="22,107,90,*">
+          <ContentControl Grid.Column="0" Theme="{StaticResource RaisedFrame}"
+                          ToolTip.Tip="Server status: green is online, red is offline">
+            <TextBlock Classes="columnHeader" Text="" />
           </ContentControl>
           <ContentControl Grid.Column="1" Theme="{StaticResource RaisedFrame}">
-            <TextBlock Classes="columnHeader" Text="Account Name" />
+            <TextBlock Classes="columnHeader" Text="Server Name" />
           </ContentControl>
           <ContentControl Grid.Column="2" Theme="{StaticResource RaisedFrame}">
+            <TextBlock Classes="columnHeader" Text="Account Name" />
+          </ContentControl>
+          <ContentControl Grid.Column="3" Theme="{StaticResource RaisedFrame}">
             <TextBlock Classes="columnHeader" Text="World Mode" />
           </ContentControl>
         </Grid>
@@ -77,10 +98,14 @@
                  DoubleTapped="OnServerListDoubleTapped">
           <ListBox.ItemTemplate>
             <DataTemplate x:DataType="m:ServerAccount">
-              <Grid ColumnDefinitions="104,90,*">
-                <TextBlock Grid.Column="0" Classes="cell" Text="{Binding ServerName}" />
-                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding AccountName}" />
-                <TextBlock Grid.Column="2" Classes="cell" Margin="0" Text="{Binding WorldMode}" />
+              <Grid ColumnDefinitions="22,104,90,*">
+                <Ellipse Grid.Column="0" Classes="status" Margin="0,0,3,0"
+                         Classes.online="{Binding IsOnlineKnown}"
+                         Classes.offline="{Binding IsOfflineKnown}"
+                         ToolTip.Tip="{Binding StatusText}" />
+                <TextBlock Grid.Column="1" Classes="cell" Text="{Binding ServerName}" />
+                <TextBlock Grid.Column="2" Classes="cell" Text="{Binding AccountName}" />
+                <TextBlock Grid.Column="3" Classes="cell" Margin="0" Text="{Binding WorldMode}" />
               </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
@@ -101,10 +126,11 @@
       </ScrollViewer>
     </ContentControl>
 
-    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="32"
+    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="28"
                 HorizontalAlignment="Center" VerticalAlignment="Bottom">
       <Button Name="PlayButton" Width="106" Content="Play" IsDefault="True" Click="OnPlayClick" />
       <Button Name="AccountsButton" Width="106" Content="Server Accounts" Click="OnAccountsClick" />
+      <Button Name="OptionsButton" Width="106" Content="Server Options" Click="OnOptionsClick" />
       <Button Name="HomepageButton" Width="106" Content="Homepage" Click="OnHomepageClick" />
       <Button Name="ExitButton" Width="106" Content="Exit" Click="OnExitClick" />
     </StackPanel>

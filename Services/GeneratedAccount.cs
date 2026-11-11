@@ -19,13 +19,23 @@ public sealed record GeneratedAccount(string AccountName, string Password, strin
     /// </summary>
     public static GeneratedAccount? Find(string? clientFolder)
     {
+        var install = InstallFolder(clientFolder);
+        return install is null ? null : Read(Path.Combine(install, "runtime", FileName));
+    }
+
+    /// <summary>
+    /// The install folder, two levels up from the client folder: for
+    /// <c>C:\OfflineDAoC-True165\new-client\godot</c> that is <c>C:\OfflineDAoC-True165</c>.
+    /// </summary>
+    public static string? InstallFolder(string? clientFolder)
+    {
         if (string.IsNullOrWhiteSpace(clientFolder))
             return null;
 
         // client folder -> new-client -> install folder
         var newClient = Path.GetDirectoryName(Path.TrimEndingDirectorySeparator(Path.GetFullPath(clientFolder)));
         var install = string.IsNullOrEmpty(newClient) ? null : Path.GetDirectoryName(newClient);
-        return string.IsNullOrEmpty(install) ? null : Read(Path.Combine(install, "runtime", FileName));
+        return string.IsNullOrEmpty(install) ? null : install;
     }
 
     private static GeneratedAccount? Read(string file)

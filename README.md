@@ -21,8 +21,16 @@ copied anywhere and needs nothing installed.
 | --- | --- |
 | **Play** | Starts the client for the entry selected in the list. Double-clicking an entry or pressing Enter does the same. |
 | **Server Accounts** | Add, edit and delete entries. |
+| **Server Options** | Edits the server settings for the selected entry's install (see below). |
 | **Homepage** | Opens the OfflineDAoC-True165 page in your browser. |
 | **Exit** | Closes the launcher. |
+
+The dot to the left of each server name shows whether that server is running: green is online, red is
+offline, grey is not checked yet. Hover over it to see the address checked. Every 5 seconds the launcher
+opens a TCP connection to the server's login port. The address and port come from the install's server config,
+`runtime\server\config`, two folders up from the entry's Godot client folder. The file used is the one
+`runtime\data\world-mode.txt` names (`serverconfig-165.xml` for 1.65 Mode), else `serverconfig.xml`.
+Without a config the entry's Server IP and port 10300 are used.
 
 Each server account has:
 
@@ -70,6 +78,19 @@ From the folder above the client folder:
 ```
 Godot_v4.7.2-stable_mono_win64.exe --path godot -- --server=<Server IP> --account=<Account Name> --password=<Account Password> --<World Mode>
 ```
+
+## Server Options
+
+Edits the `settings` section of `true165-rules.json`, found in `runtime\true165`, two folders up from the
+selected entry's Godot client folder. For the client folder `C:\OfflineDAoC-True165\new-client\godot` that is
+`C:\OfflineDAoC-True165\runtime\true165\true165-rules.json`. Nothing else in the file is changed.
+
+Each value is checked against the type the server reads it as (on/off, a number, a whole number in range,
+or a list of region IDs such as `27;165;233-242;244`) before it is saved. Housing rents are in copper; the
+form shows the amount in platinum, gold, silver and copper next to each one.
+
+**Restore Defaults** fills in the values the 1.65 install ships with; click **Save** to write them. Changes
+take effect the next time the server starts.
 
 ## Where accounts are saved
 
