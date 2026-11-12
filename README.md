@@ -21,7 +21,7 @@ copied anywhere and needs nothing installed.
 | --- | --- |
 | **Play** | Starts the client for the entry selected in the list. Double-clicking an entry or pressing Enter does the same. Play is greyed out until an entry is selected and its server shows online (green dot); hover over it to see why. |
 | **Server Accounts** | Add, edit and delete entries. |
-| **Server Control** | Opens the OfflineDAoC server control panel for the selected entry by running `START OFFLINE DAOC TRUE 1.65.cmd` from its install folder, two folders above the Godot client folder (`C:\OfflineDAoC-True165` for `C:\OfflineDAoC-True165\new-client\godot`). Windows only. |
+| **Server Control** | Opens the OfflineDAoC server control panel for the selected entry by running `START OFFLINE DAOC TRUE 1.65.cmd` from its install folder, two folders above the Godot client folder (`C:\OfflineDAoC-True165` for `C:\OfflineDAoC-True165\new-client\godot`). If the control panel (`runtime\OfflineDAoC.exe`) is already running, its window is brought to the front instead of starting a second copy. The control panel is a Windows program: on Linux and macOS it is started with Wine (`wine cmd /c`), and a running copy is brought forward with `xdotool` or `wmctrl` (Linux, X11) or System Events (macOS, may ask for Accessibility permission the first time). |
 | **OfflineDAoC Homepage** | Opens the [OfflineDAoC-True165](https://github.com/shadowofze/OfflineDAoC-True165) page in your browser. |
 | **Launcher Homepage** | Opens this launcher's page, [OfflineDAoC_GodotClient_Launcher](https://github.com/rsandersjr/OfflineDAoC_GodotClient_Launcher), in your browser. |
 | **Exit** | Closes the launcher. |

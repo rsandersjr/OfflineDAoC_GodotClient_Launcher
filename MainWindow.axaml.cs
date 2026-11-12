@@ -219,15 +219,27 @@ public partial class MainWindow : Window
             return;
         }
 
+        ServerControlResult result;
+        ServerControlButton.IsEnabled = false; // finding the running panel can take a moment on Linux/macOS
         try
         {
-            ServerControl.Launch(account);
+            result = await Task.Run(() => ServerControl.Open(account));
         }
         catch (LaunchException ex)
         {
             await Dialogs.ShowMessage(this, "Server Control", ex.Message);
             return;
         }
+        finally
+        {
+            ServerControlButton.IsEnabled = true;
+        }
+
+        if (result == ServerControlResult.AlreadyRunning)
+            await Dialogs.ShowMessage(this, "Server Control",
+                "The server control panel is already running, but the launcher could not bring its window to the front.\n\n" +
+                "Switch to the \"OfflineDAoC\" window yourself" +
+                (OperatingSystem.IsLinux() ? " (installing xdotool or wmctrl lets the launcher do it for you)." : "."));
 
         RememberSelection();
         _ = CheckServers(); // the status dot turns green once the server is up
