@@ -12,6 +12,7 @@ public partial class MainWindow : Window
 {
     private const string WelcomeText = "Welcome to Offline DAoC 1.65!";
     private static readonly Uri Homepage = new("https://github.com/shadowofze/OfflineDAoC-True165");
+    private static readonly Uri LauncherHomepage = new("https://github.com/rsandersjr/OfflineDAoC_GodotClient_Launcher");
 
     private const string DefaultNews =
         """
@@ -195,56 +196,18 @@ public partial class MainWindow : Window
         ServerList.Focus();
     }
 
-    /// <summary>
-    /// Opens the settings of the selected entry's install: true165-rules.json in runtime\true165,
-    /// two levels up from its Godot client folder.
-    /// </summary>
-    private async void OnOptionsClick(object? sender, RoutedEventArgs e)
-    {
-        if (ServerList.SelectedItem is not ServerAccount account)
-        {
-            await Dialogs.ShowMessage(this, "Server Options",
-                _store.Accounts.Count == 0
-                    ? "There are no server accounts yet.\n\nClick \"Server Accounts\" and add one with the game's Godot client folder; the server options are found from it."
-                    : "Choose a server in the list first. Its Godot client folder tells the launcher where the server options are.");
-            return;
-        }
+    private async void OnHomepageClick(object? sender, RoutedEventArgs e) =>
+        await OpenInBrowser("OfflineDAoC Homepage", Homepage);
 
-        var clientFolder = GameLauncher.FindClientFolder(account.ClientFolder) ?? account.ClientFolder;
-        var path = ServerRules.PathFor(clientFolder);
-        if (path is null || !File.Exists(path))
-        {
-            await Dialogs.ShowMessage(this, "Server Options",
-                $"Could not find {ServerRules.FileName} for \"{account.ServerName}\".\n\n" +
-                (path is null
-                    ? "Set its Godot client folder in Server Accounts first."
-                    : $"Looked for:\n{path}\n\nIt should be in runtime\\true165, two folders up from the Godot client folder."));
-            return;
-        }
+    private async void OnLauncherHomepageClick(object? sender, RoutedEventArgs e) =>
+        await OpenInBrowser("Launcher Homepage", LauncherHomepage);
 
-        ServerRules rules;
-        try
-        {
-            rules = ServerRules.Load(path);
-        }
-        catch (RulesFileException ex)
-        {
-            await Dialogs.ShowMessage(this, "Server Options", ex.Message);
-            return;
-        }
-
-        if (await new ServerOptionsWindow(rules).ShowDialog<bool>(this))
-            await Dialogs.ShowMessage(this, "Server Options",
-                "Server options saved.\n\nRestart the server for the changes to take effect.");
-        ServerList.Focus();
-    }
-
-    private async void OnHomepageClick(object? sender, RoutedEventArgs e)
+    private async Task OpenInBrowser(string title, Uri page)
     {
         var opened = false;
         try
         {
-            opened = await Launcher.LaunchUriAsync(Homepage);
+            opened = await Launcher.LaunchUriAsync(page);
         }
         catch (Exception)
         {
@@ -252,7 +215,7 @@ public partial class MainWindow : Window
         }
 
         if (!opened)
-            await Dialogs.ShowMessage(this, "Homepage", $"Could not open your web browser. The homepage is:\n\n{Homepage}");
+            await Dialogs.ShowMessage(this, title, $"Could not open your web browser. The page is:\n\n{page}");
     }
 
     private void OnExitClick(object? sender, RoutedEventArgs e) => Close();

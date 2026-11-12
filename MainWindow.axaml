@@ -126,12 +126,12 @@
       </ScrollViewer>
     </ContentControl>
 
-    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="28"
+    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="20"
                 HorizontalAlignment="Center" VerticalAlignment="Bottom">
       <Button Name="PlayButton" Width="106" Content="Play" IsDefault="True" Click="OnPlayClick" />
       <Button Name="AccountsButton" Width="106" Content="Server Accounts" Click="OnAccountsClick" />
-      <Button Name="OptionsButton" Width="106" Content="Server Options" Click="OnOptionsClick" />
-      <Button Name="HomepageButton" Width="106" Content="Homepage" Click="OnHomepageClick" />
+      <Button Name="HomepageButton" Width="134" Content="OfflineDAoC Homepage" Click="OnHomepageClick" />
+      <Button Name="LauncherHomepageButton" Width="134" Content="Launcher Homepage" Click="OnLauncherHomepageClick" />
       <Button Name="ExitButton" Width="106" Content="Exit" Click="OnExitClick" />
     </StackPanel>
   </Grid>
