@@ -3,6 +3,14 @@
 A small retro-style launcher for [OfflineDAoC-True165](https://github.com/shadowofze/OfflineDAoC-True165).
 It keeps a list of server accounts and starts the game client for the one you pick.
 
+## Features
+
+* **Client Compatibility:** Exclusively supports the [OfflineDAoC Godot Client](https://github.com/shadowofze/OfflineDAoC-True165).
+* **Server Status:** Shows a green/red circle next to the server name so you know if it's online or not.
+* **Custom Server Management:** Add multiple Offline DAoC servers. You can even connect to friends' servers (requires the host to configure their IP, firewall, and port forwarding).
+* **Multi-Account Support:** Easily manage multiple accounts for the same server. Whether you want a dedicated GM account or want to enjoy old-school multiboxing without hired companions, this tool makes it simple. The server automatically creates accounts upon login.
+* **Integrated Server Control:** Launch the *OfflineDAoC Server Control* and *Population Manager* directly from the launcher using the **Server Control** button. If the manager is already running, clicking the button will automatically bring its window to the foreground.
+
 Used Claude to code in C# with [Avalonia](https://avaloniaui.net), so the same code runs on Windows, Linux and macOS.
 
 <img width="802" height="476" alt="Main window" src="docs/main-window.png" />
