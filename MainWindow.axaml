@@ -4,7 +4,7 @@
         xmlns:c="using:OfflineDAoCLauncher.Controls"
         x:Class="OfflineDAoCLauncher.MainWindow"
         Title="Offline DAoC 1.65 Servers"
-        Width="720" Height="444"
+        Width="800" Height="444"
         CanResize="False"
         WindowStartupLocation="CenterScreen"
         Icon="/Assets/icon.ico">
@@ -126,10 +126,12 @@
       </ScrollViewer>
     </ContentControl>
 
-    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="20"
+    <StackPanel Grid.Row="3" Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="14"
                 HorizontalAlignment="Center" VerticalAlignment="Bottom">
-      <Button Name="PlayButton" Width="106" Content="Play" IsDefault="True" Click="OnPlayClick" />
+      <Button Name="PlayButton" Width="106" Content="Play" IsDefault="True" ToolTip.ShowOnDisabled="True" Click="OnPlayClick" />
       <Button Name="AccountsButton" Width="106" Content="Server Accounts" Click="OnAccountsClick" />
+      <Button Name="ServerControlButton" Width="106" Content="Server Control"
+              ToolTip.Tip="Opens the server control panel for the selected entry's install" Click="OnServerControlClick" />
       <Button Name="HomepageButton" Width="134" Content="OfflineDAoC Homepage" Click="OnHomepageClick" />
       <Button Name="LauncherHomepageButton" Width="134" Content="Launcher Homepage" Click="OnLauncherHomepageClick" />
       <Button Name="ExitButton" Width="106" Content="Exit" Click="OnExitClick" />

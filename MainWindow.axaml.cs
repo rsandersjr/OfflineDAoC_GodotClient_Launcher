@@ -39,7 +39,7 @@ public partial class MainWindow : Window
         Before You Play
         ==========================
 
-        The game server has to be running before the client can log in. For a local server the IP is 127.0.0.1.
+        The game server has to be running before the client can log in. For a local server the IP is 127.0.0.1. Click "Server Control" to start it; Play turns on once the selected server's dot is green.
 
         ==========================
         Homepage
@@ -67,6 +67,8 @@ public partial class MainWindow : Window
         };
         Select(_store.LastSelectedId);
         UpdateEmptyHint();
+        ServerList.SelectionChanged += (_, _) => UpdatePlayButton();
+        UpdatePlayButton();
 
         NewsText.Text = LoadNews();
         LoadCustomLogo();
@@ -123,6 +125,7 @@ public partial class MainWindow : Window
                     accounts[i].StatusText = $"{(up ? "Online" : "Offline")} ({ep.Host}:{ep.Port})" +
                         (ep.ConfigFile is null ? "\nNo server config found; using the Server IP and port 10300." : $"\nFrom {ep.ConfigFile}");
                 }
+                UpdatePlayButton();
             } while (_checkAgain);
         }
         finally
@@ -148,19 +151,28 @@ public partial class MainWindow : Window
             await Play();
     }
 
+    /// <summary>
+    /// Play is enabled only while a server is selected and its last status check found it online
+    /// (and no launch is in progress). The tooltip says why it is disabled.
+    /// </summary>
+    private void UpdatePlayButton()
+    {
+        var account = ServerList.SelectedItem as ServerAccount;
+        string? reason = _store.Accounts.Count == 0 ? "There are no server accounts yet. Click \"Server Accounts\" to add one."
+            : account is null ? "Choose a server in the list first."
+            : account.IsOnline is null ? $"Checking whether {account.ServerName} is online..."
+            : account.IsOnline == false ? $"{account.ServerName} is offline. Start it with \"Server Control\", then Play turns on."
+            : null;
+
+        PlayButton.IsEnabled = reason is null && !_launchCooldown.IsEnabled;
+        ToolTip.SetTip(PlayButton, reason);
+    }
+
     private async Task Play()
     {
-        if (!PlayButton.IsEnabled)
+        UpdatePlayButton();
+        if (!PlayButton.IsEnabled || ServerList.SelectedItem is not ServerAccount account)
             return;
-
-        if (ServerList.SelectedItem is not ServerAccount account)
-        {
-            await Dialogs.ShowMessage(this, "Play",
-                _store.Accounts.Count == 0
-                    ? "There are no server accounts yet.\n\nClick \"Server Accounts\" to add one."
-                    : "Choose a server in the list first.");
-            return;
-        }
 
         try
         {
@@ -184,7 +196,7 @@ public partial class MainWindow : Window
     {
         _launchCooldown.Stop();
         BannerText.Text = WelcomeText;
-        PlayButton.IsEnabled = true;
+        UpdatePlayButton();
     }
 
     private async void OnAccountsClick(object? sender, RoutedEventArgs e)
@@ -194,6 +206,31 @@ public partial class MainWindow : Window
         await accounts.ShowDialog(this);
         Select(accounts.SelectedId ?? selectedId);
         ServerList.Focus();
+    }
+
+    private async void OnServerControlClick(object? sender, RoutedEventArgs e)
+    {
+        if (ServerList.SelectedItem is not ServerAccount account)
+        {
+            await Dialogs.ShowMessage(this, "Server Control",
+                _store.Accounts.Count == 0
+                    ? "There are no server accounts yet.\n\nClick \"Server Accounts\" to add one; its Godot client folder tells the launcher where the server is installed."
+                    : "Choose a server in the list first.");
+            return;
+        }
+
+        try
+        {
+            ServerControl.Launch(account);
+        }
+        catch (LaunchException ex)
+        {
+            await Dialogs.ShowMessage(this, "Server Control", ex.Message);
+            return;
+        }
+
+        RememberSelection();
+        _ = CheckServers(); // the status dot turns green once the server is up
     }
 
     private async void OnHomepageClick(object? sender, RoutedEventArgs e) =>

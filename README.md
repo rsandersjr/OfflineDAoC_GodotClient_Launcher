@@ -19,8 +19,9 @@ copied anywhere and needs nothing installed.
 
 | Button | What it does |
 | --- | --- |
-| **Play** | Starts the client for the entry selected in the list. Double-clicking an entry or pressing Enter does the same. |
+| **Play** | Starts the client for the entry selected in the list. Double-clicking an entry or pressing Enter does the same. Play is greyed out until an entry is selected and its server shows online (green dot); hover over it to see why. |
 | **Server Accounts** | Add, edit and delete entries. |
+| **Server Control** | Opens the OfflineDAoC server control panel for the selected entry by running `START OFFLINE DAOC TRUE 1.65.cmd` from its install folder, two folders above the Godot client folder (`C:\OfflineDAoC-True165` for `C:\OfflineDAoC-True165\new-client\godot`). Windows only. |
 | **OfflineDAoC Homepage** | Opens the [OfflineDAoC-True165](https://github.com/shadowofze/OfflineDAoC-True165) page in your browser. |
 | **Launcher Homepage** | Opens this launcher's page, [OfflineDAoC_GodotClient_Launcher](https://github.com/rsandersjr/OfflineDAoC_GodotClient_Launcher), in your browser. |
 | **Exit** | Closes the launcher. |
@@ -118,8 +119,9 @@ Publish a standalone single-file build:
 dotnet publish -c Release -r win-x64 -o dist/win-x64
 dotnet publish -c Release -r linux-x64 -o dist/linux-x64
 dotnet publish -c Release -r osx-arm64 -o dist/osx-arm64
+dotnet publish -c Release -r osx-x64 -o dist/osx-x64
 ```
 
-All three build from any OS. Only the Windows build has been run and tested so far. On Linux and macOS the
+`osx-arm64` is for Apple Silicon Macs (M1 and newer), `osx-x64` for Intel Macs. All of them build from any OS. Only the Windows build has been run and tested so far. On Linux and macOS the
 launcher looks for `Godot_v*_mono_linux.x86_64` and `Godot_mono.app` in the folder you pick; mark the
 published launcher executable with `chmod +x` before running it.
