@@ -5,9 +5,9 @@ It keeps a list of server accounts and starts the game client for the one you pi
 
 Used Claude to code in C# with [Avalonia](https://avaloniaui.net), so the same code runs on Windows, Linux and macOS.
 
-<img width="646" height="481" alt="image" src="https://github.com/user-attachments/assets/2f110bcd-f00e-470e-b480-c792c7e0df13" />
-<img width="583" height="322" alt="image" src="https://github.com/user-attachments/assets/b44f7f24-3d72-44aa-a7b2-59003444aa32" />
-<img width="503" height="341" alt="image" src="https://github.com/user-attachments/assets/9089de8c-5c2d-4681-9f63-5df0cd7e5176" />
+<img width="718" height="472" alt="image" src="https://github.com/user-attachments/assets/3136b97b-b290-4816-8a0a-95716b7c21e2" />
+<img width="585" height="325" alt="image" src="https://github.com/user-attachments/assets/b11e4a2c-1cda-46fc-b26d-b249c780b178" />
+<img width="499" height="333" alt="image" src="https://github.com/user-attachments/assets/949ec3f8-daed-46a0-b5fd-371b46f15eba" />
 
 
 ## Running it
